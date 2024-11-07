@@ -1,0 +1,329 @@
+#!/bin/bash
+
+# Copyright (c) 2024, UnsignedChad <unsignedcharles@protonmail.com>
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+
+# Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+################################################################################
+
+# The script assumes that you are in a live enviroment on a USB or a VM and are
+# configuring your system from your home directory.
+# You need sudo privledges for this script.
+# The ascii art is pulled from https://emojicombos.com/pikachu-text-art
+
+
+
+
+echo "
+⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻⣟⣿⣻
+⣟⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷
+⣿⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞Chad's simple Gentoo install script⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷
+⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⢾⣽⣻
+⣟⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⢾⣽⣻⢾⣽
+⣿⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⡾⠷⠿⠾⠷⠿⢞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⢾⣽⣻⢾⣽⣻⢾
+⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⣞⠷⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠳⢿⣾⣷⣻⣞⣷⣻⣞⣷⣻⣞⣷⣻⡾⢷⣻⣞⣷⣻⣞⡷⣯⣟⡾⣽⣻⢾⣽⣻
+⣟⣷⣻⣞⣷⣻⣞⣷⣻⣞⣿⣿⣞⣷⣻⣞⣷⣻⣾⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠿⣿⣿⣾⣷⣻⣞⣷⣻⣞⠟⠀⠀⢻⣽⣾⣷⣯⣟⡷⣯⣟⡷⣯⣟⡾⣽
+⣿⡼⣧⢿⡼⣧⢿⡼⣧⢿⣼⣿⣿⣼⣧⣿⣼⡻⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣧⣿⡼⣧⡟⠀⠀⠀⠀⢿⣧⢿⣿⣻⢿⣧⣟⡿⣧⣟⣿⣻
+⣯⢿⡽⣯⢿⡽⣯⢿⣽⣻⢾⡽⣿⣿⣷⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣿⠋⠀⠀⠀⠀⠀⠈⣿⣿⣽⣿⣟⡾⣽⣻⢷⣻⢾⣽
+⡿⣯⢿⡽⣯⢿⣽⣻⢾⡽⣯⣟⡷⣯⢿⣿⣿⣞⢹⣷⠆⠀⠀⠀⠀⠀⠀⠀⣴⠛⣻⣷⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠣⣄⠀⠀⠀⠀⠀⠀⢸⣿⣞⣿⣯⣟⡷⣯⢿⣽⣻⢾
+⠉⠉⠈⠉⠁⠉⠈⠁⠉⠉⠈⠁⠉⠉⠉⢩⠿⣿⣿⣟⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣿⣿⣿⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢸⣷⣄⠀⠀⠀⠀⠀⢿⡉⡍⣹⡍⠉⠁⠉⠈⠁⠉
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⠀⠉⠻⡳⣝⠃⠀⠀⠀⠀⠀⠈⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠈⠓⣤⣄⣀⡀⢀⣼⣿⣿⣷⣄⠀⠀⠀⢸⣿⠐⠤⣷⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠛⠺⠓⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⡏⠀⠉⠉⠙⠛⠻⠿⠿⠇⠀⢀⣼⠟⣈⢒⣾⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡆⠀⠀⠀⣠⠞⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⣸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⡡⢊⣴⠞⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢆⠀⠀⣏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠙⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢹⠁⠀⠀⠀⠀⠀⠀⠀⠀⣤⠞⡡⢃⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢑⡶⢧⡀⣀⢸⣿⣏⢹⣿⣾⡆⢀⣿⣧⢤⣀⠀⠀⣀⡄⠀⠀⣸⠀⠀⠀⠀⠀⠀⢀⣴⠞⡡⢊⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠋⠀⠈⢳⢿⣼⣿G⣿⣿⣷⡿⠛⣟⠁⠀⠀⠉⠉⠀⠀⠀⠀⠘⡆⠀⠀⠀⣀⡴⡛⢡⢊⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⢀⡟⠀⣿⣿E⡿L⣿⠂⠈⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣄⠀⠀⠉⢷⡈⠆⢿⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣆⠀⠀⣼⡋⠀⠈⣿N⣻I⡇⠀⠀⣿⢸⠢⣄⠀⠀⠀⠀⠀⠀⠀⠈⢿⠓⠀⣀⡼⡷⢉⢆⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠓⡶⢻⡇⠀⠀⣺T⣿N⡇⠀⠀⢻⢾⠀⠈⠉⠒⠒⠛⠁⠀⠀⠀⠘⡆⠻⣏⡡⡑⣚⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⢀⡀⣀⡀⣀⢀⠀⢀⣠⡞⠀⢸⡇⠀⢀⣿O⣿U⠇⠀⠀⢸⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣦⣾⣃⣔⣩⣷⢀⣀⣀⣀⡀⣀⣀⢀⣀⣀⡀⡀⡀⣀⢀
+⠊⢁⠂⠛⢉⠋⡙⢉⠛⠙⡉⠛⠋⠛⠋⡙⣿⠀⠀⠸⡇⠀⣼⣻O⣿X⣧⡀⠀⢸⢸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣾⡿⣿⣿⠋⡙⠋⠙⡉⠍⠋⢋⠉⢋⠙⢉⠙⡉⠋⠍⠋
+⠠⠡⢈⠘⠠⢁⠄⡃⠌⡐⢠⠁⡃⠌⠒⡀⢿⡀⠀⠀⣇⢀⠛⠛⠛⠛⠛⠚⠃⠀⢸⣾⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡿⣽⣳⣿⠀⢄⠃⡡⠒⣈⠘⢠⠑⡈⠌⡂⡘⠠⢉⡐⡁
+⠀⢣⠈⡌⠒⠀⠂⡄⠃⢰⠀⠒⠐⠈⠐⡄⠈⣧⠀⠀⠉⠉⠉⠉⠉⠉⠉⠙⠛⠒⠚⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⡟⢳⣿⡏⠐⠂⠁⠂⡔⢠⠘⠀⠒⠀⠃⠐⢠⠑⢠⠐⠀
+⠐⡈⠄⠰⠈⠄⢡⠘⣈⠐⢨⢀⠃⡌⠡⡐⠡⡈⣷⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⢯⣟⣯⡟⠁⡄⢃⢉⠰⠐⡈⠤⠑⢂⠡⢊⠡⣈⠐⡁⢂⠡
+⢀⠡⡈⢂⡉⠔⢂⠂⡄⡈⢄⢂⠰⢀⠡⡐⠐⢺⣅⣀⣉⣱⣶⣶⣶⣶⣶⡾⣿⢶⠶⠶⢦⢤⣴⠔⠲⠒⣲⣿⣟⡿⣞⡿⠋⢁⡐⢂⡐⢂⠂⡐⢡⠐⢂⡁⢂⠒⣀⠒⣀⠒⣀⠃⠄
+⠀⡑⢈⠄⡰⠈⡄⢊⡐⠐⢠⢈⠂⠆⡠⠡⠌⡐⢈⠡⠐⡈⠙⡙⢈⠡⠠⡐⢀⠢⠌⡐⠄⡀⠛⠳⠶⠚⡹⢷⣯⠿⠋⠠⠘⠠⠐⠂⠄⠃⠤⠑⠠⠌⠄⠒⠠⠒⡀⠒⡀⠒⠠⠌⡐
+Sources: 
+    https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Media
+    'Gentoo: A Comfy Install Guide' by DenshVideo (https://www.youtube.com/watch?v=J7W9MItUSGw)
+"
+
+read -p "You need to partition the disks with cfdisk select gpt for UEFI systems (press enter to continue)"
+echo " 
+Here's the default partitioning scheme(if you have more than 8GB of RAM refer to the link below)
+
++-------------+-----------------+---------------------+-------------------------------------------+
+| Partition   | Filesystem      | Size                | Description                               |
++-------------+-----------------+---------------------+-------------------------------------------+
+| /dev/sda1   | fat32           | 1 GiB               | EFI System Partition (for UEFI boot)     |
+| /dev/sda2   | linux-swap      | RAM size * 2        | Swap partition (for system hibernation)  |
+| /dev/sda3   | xfs             | Remainder of disk   | Root partition (mount as /)               |
++-------------+-----------------+---------------------+-------------------------------------------+
+
+"
+read -p "Go to [https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Media] if you need help (press enter to continue)"
+cfdisk
+
+read -p "Now lets check the table with lsblk (press enter to coninue)"
+lsblk
+read -p "If everything looks good, were going to run 
+mkfs.ext4 /dev/sda3 
+(press enter to coninue)"
+mkfs.ext4 /dev/sda3
+
+read -p "If everything looks good, were going to run 
+mkfs.fat -F 32 /dev/sda1
+(press enter to coninue)"
+mkfs.fat -F 32 /dev/sda1
+
+read -p "If everything looks good, were going to run 
+mkfswap /dev/sda2
+(press enter to coninue)"
+mkfswap /dev/sda2
+
+read -p "If everything looks good, were going to run 
+mkdir /mnt/gentoo
+mount /dev/sda3 /mnt/gentoo
+lsblk
+(press enter to coninue)"
+mkdir /mnt/gentoo
+mount /dev/sda3 /mnt/gentoo
+
+read -p "If everything looks good, were going to run 
+mkdir -p /mnt/gentoo/boot/efi
+mount /dev/sda1 /mnt/gentoo/boot/efi
+swapon /dev/sda2
+lsblk
+date
+(press enter to coninue)"
+mkdir -p /mnt/gentoo/boot/efi
+mount /dev/sda1 /mnt/gentoo/boot/efi
+swapon /dev/sda2
+lsblk
+date
+
+read -p "The 'date' command was run to check the time.
+The time must be correct for the stage3 download/install. Correct the time in your settings before you continue.
+(press enter to coninue)"
+read -p "Go to https://www.gentoo.org/downloads/ and select your stage3. Copy the link. 
+(press enter to coninue)"
+#cp "$SCRIPT_NAME" "$MOUNT_PATH/$SCRIPT_NAME"
+cp gentoo_install2 /mnt/gentoo/gentoo_install2
+cp gentoo_install3 /mnt/gentoo/gentoo_install3
+cd /mnt/gentoo/
+
+# Loop indefinitely until a valid download is completed
+while true; do
+    # Prompt the user for a URL
+    echo "Please enter the URL to download:"
+    read url
+
+    # Check if the user provided an input
+    if [ -z "$url" ]; then
+        echo "Error: No URL provided. Please enter a valid URL.(ctrl-c to quit)"
+        continue  # Loop back to the prompt if no input is given
+    fi
+
+    # Use wget to download the file
+    wget "$url"
+
+    # Check if wget was successful
+    if [ $? -eq 0 ]; then
+        echo "Download completed successfully."
+        break  # Exit the loop once the download is successful
+    else
+        echo "Download failed. Please check the URL and try again.(crtl-c to quit)"
+    fi
+done
+
+echo"Upacking the stage tarball (https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage)
+tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo"
+tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo
+
+read -p "Configuring compile options. Add MAKEOPTS=
+go to https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Stage for more info
+nano /mnt/gentoo/etc/portage/make.conf
+(press any key to continue)"
+nano /mnt/gentoo/etc/portage/make.conf
+
+read -p "Go to https://www.gentoo.org/downloads/mirrors/
+Select a mirror
+copy link
+(press any key to continue)"
+
+# Loop indefinitely until a valid download is completed
+while true; do
+    # Prompt the user for a URL
+    echo "Please enter the URL to add to etc/portage/make.conf"
+    read url
+
+    # Check if the user provided an input
+    if [ -z "$url" ]; then
+        echo "Error: No URL provided. Please enter a valid URL.(ctrl-c to quit)"
+        continue  # Loop back to the prompt if no input is given
+    fi
+
+        echo "Adding GENTOO_MIRRORS=\"$url\" to /mnt/gentoo/etc/portage/make.conf"
+        echo "GENTOO_MIRRORS=\"$url\"" >> /mnt/gentoo/etc/portage/make.conf
+        echo "URL added successfully in the correct format: GENTOO_MIRRORS=\"$url\""
+    break
+done
+
+read -p "copying the dns info
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+(press enter to continue)"
+cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
+
+read -p "Mounting the necessary filesystems
+mount --types proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --make-rslave /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
+mount --make-rslave /mnt/gentoo/dev
+mount --bind /run /mnt/gentoo/run
+mount --make-slave /mnt/gentoo/run 
+(press any key to continue)"
+mount --types proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --make-rslave /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
+mount --make-rslave /mnt/gentoo/dev
+mount --bind /run /mnt/gentoo/run
+mount --make-slave /mnt/gentoo/run 
+
+read -p "Checking if shm is a symbolic link to /run/shm (press enter to coninue)
+ls -l /run/shm"
+ls -l /run/shm
+
+while true; do
+
+# Prompt for a number
+echo "If your output is like
+lrwxrwxrwx 1 root root 8 Nov  6 21:26 /run/shm -> /dev/shm
+enter 1. Otherwise enter 2.
+"
+read number
+
+# If-elif-else statement
+if [ $number -eq 1 ]; then
+    echo "Fixing files..."
+    test -L /dev/shm && rm /dev/shm && mkdir /dev/shm 
+    mount --types tmpfs --options nosuid,nodev,noexec shm /dev/shm 
+    chmod 1777 /dev/shm /run/shm
+    break
+elif [ $number -eq 2 ]; then
+    echo "User did not confirm symbolic link moving on."
+    break
+else
+   # Invalid input, prompt again
+    echo "Invalid input. Please enter either 1 or 2."
+    fi
+done
+
+read -p "Changing root directory (press enter to coninue)
+
+"
+# Define variables for the script name and chroot path
+SCRIPT_NAME="gentoo_install2"   # Replace with your script name
+MOUNT_PATH="/mnt/gentoo"
+
+# Step 1: Copy the script into the chroot environment (root of chroot, not /root/)
+echo "Copying the script to the chroot environment..."
+#cp "$SCRIPT_NAME" "$MOUNT_PATH/$SCRIPT_NAME"
+chmod +x "$MOUNT_PATH/$SCRIPT_NAME"
+
+# Step 2: Enter the chroot interactively
+echo "Entering the chroot environment... run ./gentoo_install2 inside chroot"
+chroot /mnt/gentoo /bin/bash 
+
+# Step 3: Ensure the script is cleaned up (in case of errors)
+if [ -f "$MOUNT_PATH/$SCRIPT_NAME" ]; then
+  echo "Cleaning up the script in the live environment..."
+  rm -f "$MOUNT_PATH/$SCRIPT_NAME"
+fi
+
+echo "Script executed and cleaned up successfully."
+
+
+
+
+
+
+
+
+
+
+
+#############################################
+
+# Step 2: Run commands as root on the host system (after exiting chroot)
+echo "Now in the host system, running commands as root..."
+
+
+
+    # Your commands to run outside chroot, for example:
+    echo 'Running commands outside chroot...'
+    # You can run anything here, for example:
+    #ls /root
+    # Or any other setup tasks you need.
+    # Make sure to replace this with actual commands you want to run.
+    # Exit to return to the chroot environment
+
+    wget https://raw.githubusercontent.com/glacion/genfstab/refs/heads/master/genfstab
+    chmod +x genfstab
+    ./genfstab /mnt/gentoo > /mnt/gentoo/etc/fstab
+
+
+# Step 3: Re-enter the chroot
+read -p "Changing root directory (press enter to coninue)
+
+"
+# Define variables for the script name and chroot path
+SCRIPT_NAME="gentoo_install3"   # Replace with your script name
+MOUNT_PATH="/mnt/gentoo"
+
+# Step 1: Copy the script into the chroot environment (root of chroot, not /root/)
+echo "Copying the script to the chroot environment..."
+#cp "$SCRIPT_NAME" "$MOUNT_PATH/$SCRIPT_NAME"
+chmod +x "$MOUNT_PATH/$SCRIPT_NAME"
+
+# Step 2: Enter the chroot interactively
+echo "Entering the chroot environment... run ./gentoo_install2 inside chroot"
+chroot /mnt/gentoo /bin/bash 
+
+# Step 3: Ensure the script is cleaned up (in case of errors)
+if [ -f "$MOUNT_PATH/$SCRIPT_NAME" ]; then
+  echo "Cleaning up the script in the live environment..."
+  rm -f "$MOUNT_PATH/$SCRIPT_NAME"
+fi
+
+echo "Script executed and cleaned up successfully."
+
+
+
+
+
+
+
+

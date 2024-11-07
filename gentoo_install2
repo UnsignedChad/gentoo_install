@@ -1,0 +1,144 @@
+#!/bin/bash
+
+cd
+source /etc/profile 
+export PS1="(chroot) ${PS1}"
+
+
+
+read -p "Using portage. This may take awhile. (press enter to coninue)
+emerge-webrsync
+"
+emerge-webrsync
+
+read -p "Reading the news. (press enter to coninue)
+eselect news list
+"
+eselect news list
+
+read -p "Listing the profiles (press enter to coninue)
+eselect profile list
+"
+eselect profile list
+
+read -p "select your profile (press enter to coninue)
+eselect profile set
+"
+    # Prompt for the profile name
+    echo "Enter the profile you want to set (e.g., 1):"
+    read PROFILE_NAME
+
+    # Loop until the eselect command succeeds
+    while true; do
+        echo "Attempting to set the profile to: $PROFILE_NAME..."
+
+        # Attempt to set the profile
+        eselect profile set $PROFILE_NAME
+
+        # Check if the command was successful
+        if [ $? -eq 0 ]; then
+            echo "Profile successfully set to $PROFILE_NAME."
+            break  # Exit the loop if the command was successful
+        else
+            echo "Failed to set the profile '$PROFILE_NAME'. Please check if the profile is valid."
+            echo "Try again."
+        fi
+    done
+
+read -p "Printing useflags, edit these later if you need to (press enter to coninue)
+emerge --info | grep ^USE
+"
+emerge --info | grep ^USE
+
+read -p "Add USE="'""'"  to your make.conf under the # NOTE: This stage was built with the bindist USE flag enabled  (press enter to coninue)
+nano /etc/portage/make.conf
+"
+nano /etc/portage/make.conf
+
+read -p "Updating the @world set (press enter to coninue)
+emerge --ask --verbose --update --deep --newuse @world
+"
+emerge --ask --verbose --update --deep --newuse @world
+
+read -p "Add ACCEPT_LICENSE="'"*"'" to your make.conf after the USE="'""'"  line  (press enter to coninue)
+nano /etc/portage/make.conf"
+nano /etc/portage/make.conf
+
+echo "Enter your timezone (e.g., America/NewYork):"
+read TIME_ZONE
+echo "$TIME_ZONE" > /etc/timezone
+emerge --config sys-libs/timezone-data
+
+read -p "Editing locale.gen  (press enter to coninue)"
+
+# The text you want to prepend
+TEXT_TO_PREPEND="en_US.UTF-8 UTF-8"
+
+# The file to which you want to prepend the text
+FILE_PATH="/etc/local.gen"
+
+# Prepend the text to the file
+echo "$TEXT_TO_PREPEND" | cat - "$FILE_PATH" > temp_file && mv temp_file "$FILE_PATH"
+echo "Text has been prepended to $FILE_PATH"
+locale-gen
+
+read -p "Setting locale (press enter to coninue)
+eselect locale list
+eselect locale set 5"
+eselect locale list
+eselect locale set 5
+env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
+
+read -p "configuring the kernel (press enter to coninue)
+emerge --ask sys-kernel/gentoo-sources
+cd /usr/src/
+ls -l"
+emerge --ask sys-kernel/gentoo-sources
+
+read -p "
+The first part of the script ends here. You have two options you could cd into your linux-x-x-x dir and run make menuconfig 
+or you could configure the kernel via commands
+Exit the script here if you want to use make menuconfig
+
+(press enter to continue)
+emerge --ask sys-kernel/installkernel
+emerge --ask sys-kernel/gentoo-kernel-bin
+emerge --ask sys-kernel/linux-firmware
+"
+emerge --ask sys-kernel/installkernel
+emerge --ask sys-kernel/gentoo-kernel-bin
+
+
+while true; do
+
+# Prompt for a number
+echo "If you want to install firmware enter 1
+        if not enter 2
+"
+read number
+
+# If-elif-else statement
+if [ $number -eq 1 ]; then
+    echo "installing firmware"
+    emerge --ask sys-kernel/linux-firmware
+    break
+elif [ $number -eq 2 ]; then
+    echo "No firmware installed"
+    break
+else
+   # Invalid input, prompt again
+    echo "Invalid input. Please enter either 1 or 2."
+    fi
+done
+
+
+# Check if inside chroot
+if [ ! -d /mnt/gentoo ]; then
+    echo "This script must be run from inside a chroot environment."
+    exit 1
+fi
+
+# Step 1: Leave the chroot environment
+echo "Exiting chroot environment temporarily..."
+exit
+
