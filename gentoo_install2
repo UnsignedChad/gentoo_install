@@ -84,9 +84,12 @@ locale-gen
 
 read -p "Setting locale (press enter to coninue)
 eselect locale list
-eselect locale set 5"
+"
 eselect locale list
-eselect locale set 5
+echo "enter which locale to set:"
+read LOCALE
+eselect locale set $LOCALE
+
 env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 
 read -p "configuring the kernel (press enter to coninue)
@@ -141,4 +144,3 @@ fi
 # Step 1: Leave the chroot environment
 echo "Exiting chroot environment temporarily..."
 exit
-
