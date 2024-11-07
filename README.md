@@ -1,7 +1,7 @@
 # gentoo_install
 simple installation script for gentoo linux
 
-# How to use:
+# How to use
 run sudo su
 cd into the directory the three scripts are located
 run /gentoo_install1
